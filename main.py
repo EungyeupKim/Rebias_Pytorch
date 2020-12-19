@@ -47,6 +47,7 @@ if __name__ == '__main__':
     writer = SummaryWriter('./run/{}'.format(args.name))
 
     train_loader, biased_test_loader, unbiased_test_loader = get_dataloader(args)
+    ###For Sanity Check###
     # root = "./dataset/MNIST"
     # train_loader = get_biased_mnist_dataloader(root, batch_size=args.batch_size,
     #                                         data_label_correlation=args.rho,
@@ -60,7 +61,7 @@ if __name__ == '__main__':
     #                             data_label_correlation=0.1,
     #                             n_confusing_labels=9,
     #                             train=False)
-    #
+    ######
     model_f = SimpleConvNet().to(device)
     model_g = SimpleConvNet(kernel_size=1).to(device)
     model_v = SimpleConvNet().to(device)
@@ -79,19 +80,6 @@ if __name__ == '__main__':
     scheduler_g = lr_scheduler.StepLR(optimizer_g, step_size=args.lr_step, gamma=args.decay_factor)
     scheduler_v = lr_scheduler.StepLR(optimizer_v, step_size=args.lr_step, gamma=args.decay_factor)
     scheduler_b = lr_scheduler.StepLR(optimizer_b, step_size=args.lr_step, gamma=args.decay_factor)
-
-    learning_curve = {
-        "loss_f": [],
-        "loss_v": [],
-        "loss_b": [],
-        "f_acc_b": [],
-        "v_acc_b": [],
-        "b_acc_b": [],
-        "f_acc_d": [],
-        "v_acc_d": [],
-        "b_acc_d": [],
-        "HSIC": [],
-    }
 
     if not os.path.exists(args.save_path):
         os.mkdir(args.save_path)
@@ -227,19 +215,6 @@ if __name__ == '__main__':
             torch.save(model_v.state_dict(), os.path.join(args.save_path, args.name, "model_v_{}.pth".format(epoch + 1)))
             torch.save(model_b.state_dict(), os.path.join(args.save_path, args.name, "model_b_{}.pth".format(epoch + 1)))
 
-        learning_curve['loss_f'].append(loss_f)
-        learning_curve['loss_v'].append(loss_v)
-        learning_curve['loss_b'].append(loss_b)
-        learning_curve['f_acc_b'].append(100 * f_acc_b / (len(biased_test_loader) * args.batch_size))
-        learning_curve['v_acc_b'].append(100 * v_acc_b / (len(biased_test_loader) * args.batch_size))
-        learning_curve['b_acc_b'].append(100 * b_acc_b / (len(biased_test_loader) * args.batch_size))
-        learning_curve['f_acc_d'].append(100 * f_acc_d / (len(biased_test_loader) * args.batch_size))
-        learning_curve['v_acc_d'].append(100 * v_acc_d / (len(biased_test_loader) * args.batch_size))
-        learning_curve['b_acc_d'].append(100 * b_acc_d / (len(biased_test_loader) * args.batch_size))
-        learning_curve['HSIC'].append(criterionHSIC(f_feats, g_feats))
-
-    with open(os.path.join(args.save_path, args.name, "l_curve.pickle"), "wb") as file:
-        pickle.dump(learning_curve, file)
 
 
 
