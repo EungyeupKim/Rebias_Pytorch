@@ -19,7 +19,7 @@ Quantitative comparison (Top-1 Accuracy) between Rebias and its baselines and it
 * HSIC Learning Curve
 
 ### Additional Experiments on Colored-MNIST dataset (taken from the original implementation repository)
-This experiment is done as a sanity check of our implementation on the existing datasets in the original repository. Except colored-MNIST dataset and dataloader, every pipeline including model architecture and objective functions are solely implemented by me. 
+This experiment is done as a sanity check of our implementation on the existing datasets in the original repository. Except colored-MNIST dataset and dataloader, every pipeline including model architecture and objective functions is solely implemented by EungyeupKim. 
 
 * Train Dataset: Colored-MNIST dataset with rho = 0.999, 0.997, 0.995, 0.99, 0.9 ```--rho 0.999```
 * Test Dataset: Biased Set (same rho with train set), Unbiased Set (rho = 0.1)
