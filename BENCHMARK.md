@@ -28,13 +28,17 @@ This experiment is done as a sanity check of our implementation on the existing 
 
 ## Quantitative Results
 ### Top1 Accuracy on MNIST-CIFAR10 and Colored-MNIST
+![Top-1 Accuracy on MNIST-CIFAR10](./images/mnist_cifar.PNG)
+![Top-1 Accuracy on Colored-MNIST](./images/colored_mnist.PNG)
+
 ### Colored-MNIST
-As seen in the table, Vanilla, Biased and Rebias demonstrate the accuracies similar to those reported in the original paper. While Vanilla achieves nearly 97% accuracies on the biased dataset, its accuracies drastically drop on the debiased dataset (90% accuracy decrease in rho=0.999). This represents that Colored MNIST contain correlation between color and MNIST label, which encourages the model to rely on spurious attributes for classification. Fortunately, the proposed model, Rebias, has tackled this issue and outperformed Vanilla with remarkable gap on every correlation except for rho=0.99.(rho가 0.9도면 포함시키자!)
+As seen in the table, Vanilla, Biased and Rebias demonstrate the accuracies similar to those reported in the original paper. While Vanilla achieves nearly 97% accuracies on the biased dataset, its accuracies drastically drop on the debiased dataset (90% accuracy decrease in rho=0.999). This represents that Colored MNIST contain correlation between color and MNIST label, which encourages the model to rely on spurious attributes for classification. Fortunately, the proposed model, Rebias, has tackled this issue and outperformed Vanilla with remarkable gap on every correlation except for rho=0.99 and rho=0.9.
 
 #### MNIST-CIFAR10
 As shown in the table, while Vanilla achieves nearly 96% of accuracy on biased datasets regardless of their correlation, it presents lower scores, i.e. average 92% on unbiased datasets. This performance gap demonstrates that in some degree, Vanilla learns a biased representation from the MNIST-CIFAR10 dataset and the degree increases as the correlation becomes severe (5% accuracy decrease). However, unlike in the Colored-MNIST setting, Rebias shows incremental improvement in the test accuracy compared to the Vanilla.
 
 ### Learning Curve of HSIC
+![Learning Curve of HSIC](./images/HSIC.PNG)
 
 ### Analysis
 To better understand the reason of this disappointing result, in-depth analysis both on accuracies of Biased and on HSIC learning curve is required. First of all, Biased model's accuracy gap between biased and unbiased setting is large compared to other baselines, indicating that this model is specialized at capturing the bias inherent in the dataset. This is mainly due to its architectural design, i.e. restricted size of receptive field. 
