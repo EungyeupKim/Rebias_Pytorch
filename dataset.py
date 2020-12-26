@@ -9,6 +9,7 @@ import os
 from glob import glob
 from PIL import Image
 from tqdm import tqdm
+import argparse
 
 def get_dataloader(args):
     Transform = T.Compose([T.Resize((32, 32)), T.ToTensor()])
@@ -104,6 +105,11 @@ class make_biased_set(Dataset):
         save_image(img, os.path.join(self.save_dir, self.phase, "{}.png".format(name)))
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--rhos', nargs='+', type=float, default=[1.0, 0.999, 0.997, 0.995, 0.99, 0.9, 0.1], help='bias ratio: 0.999 | 0.997 | 0.995 | 0.99 | 0.9 | 0.0')
+    parser.add_argument('--save_dir', type=str, default="./dataset/mnist_cifar", help='path of dataset to be saved')
+    args = parser.parse_args()
+
     mnist_trainset = torchvision.datasets.MNIST(root='./dataset', train=True, download=True,
                                                transform=T.Compose([T.Resize((32, 32)), T.ToTensor()]))
     mnist_testset = torchvision.datasets.MNIST(root='./dataset', train=False, download=True,
@@ -119,14 +125,11 @@ if __name__ == '__main__':
     cifar_train_list = next(iter(DataLoader(cifar_trainset, batch_size=len(cifar_trainset), shuffle=False, num_workers=4)))
     cifar_test_list = next(iter(DataLoader(cifar_testset, batch_size=len(cifar_testset), shuffle=False, num_workers=4)))
 
+    if not os.path.exists(args.save_dir):
+        os.mkdir(args.save_dir)
 
-    rhos = [0.999, 0.997, 0.995, 0.99, 0.9, 0.1]
-    save_dir = "./dataset/mnist_cifar"
-    if not os.path.exists(save_dir):
-        os.mkdir(save_dir)
-
-    for rho in rhos:
-        rho_dir = os.path.join(save_dir, str(rho))
+    for rho in args.rhos:
+        rho_dir = os.path.join(args.save_dir, str(rho))
         if not os.path.exists(rho_dir):
             os.mkdir(rho_dir)
         print('generate biased dataset with correlation : {}'.format(rho))
