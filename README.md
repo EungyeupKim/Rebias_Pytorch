@@ -25,7 +25,7 @@ pip install -r requirements.txt
 ### Train and Test Datasets
 Generate Biased MNIST-CIFAR10 datasets with varying correlation (1.0, 0.999, 0.997, 0.995, 0.99, 0.9, 0.1)
 ```
-python dataset.py --rho 1.0, 0.999, 0.997, 0.995, 0.990, 0.90, 0.1
+python dataset.py --rhos 1.0, 0.999, 0.997, 0.995, 0.990, 0.90, 0.1
 ```
 Above command line generates both train and test sets for each correlation, saving under the default dataset path.
 Note that we use the two evaluation dataset, biased and unbiased sets, as in the original paper.
